@@ -62,7 +62,6 @@ export default function Navbar() {
   useEffect(() => {
     if (auth.user) {
       handleClose(); 
-      navigate("/");
     }
     if (location.pathname === "/login" || location.pathname === "/register") {
       navigate("/");
