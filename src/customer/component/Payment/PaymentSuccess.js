@@ -12,9 +12,13 @@ const PaymentSuccess = () => {
   const [paymentStatus, setPaymentStatus] = useState();
   const { orderId } = useParams();
   const dispatch = useDispatch();
-  const { order } = useSelector(store => store);
 
-  console.log("order".order.order)
+  // ✅ Correct: Access order reducer properly
+  const { order } = useSelector((store) => store.order);
+
+  // ✅ Correct logging
+  console.log("Order from Redux:", order);
+
   useEffect(() => {
     const urlParam = new URLSearchParams(window.location.search);
     setPaymentId(urlParam.get("razorpay_payment_id"));
@@ -45,7 +49,7 @@ const PaymentSuccess = () => {
       <OrderTracker activeStep={1} />
 
       <Grid container spacing={4} className='py-10'>
-        {order.order?.orderItems.map((item, index) => (
+        {order?.orderItems?.map((item, index) => (
           <Grid item xs={12} sm={6} md={12} key={index}>
             <Paper elevation={3} className='p-4'>
               <Grid container spacing={2} direction="column">
@@ -60,18 +64,26 @@ const PaymentSuccess = () => {
                       />
                     </Grid>
                     <Grid item xs>
-                      <Typography variant="subtitle1" fontWeight="bold">item.product.title</Typography>
-                      <Typography variant="body2" color="text.secondary">Color: {item.color}</Typography>
-                      <Typography variant="body2" color="text.secondary">Size: {item.size}</Typography>
-                      <Typography variant="body2">Seller: {item.product.brand}</Typography>
+                      <Typography variant="subtitle1" fontWeight="bold">
+                        {item.product.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Color: {item.color}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Size: {item.size}
+                      </Typography>
+                      <Typography variant="body2">
+                        Seller: {item.product.brand}
+                      </Typography>
                       <Typography variant="h6">₹{item.price}</Typography>
                     </Grid>
                   </Grid>
                 </Grid>
 
-                {/* AddressCard at Bottom of Card */}
+                {/* AddressCard */}
                 <Grid item>
-                  <AddressCard address={order.order?.shippingAddress} />
+                  <AddressCard address={order?.shippingAddress} />
                 </Grid>
               </Grid>
             </Paper>
